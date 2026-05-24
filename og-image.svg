@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#EBE2C8"/>
+
+  <!-- top + bottom rules -->
+  <rect x="0" y="0" width="1200" height="14" fill="#121212"/>
+  <rect x="0" y="58" width="1200" height="2" fill="#121212"/>
+  <rect x="0" y="572" width="1200" height="2" fill="#121212"/>
+
+  <!-- top meta strip -->
+  <text x="80" y="42" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="#121212">VOL. I — NO. 001 / 064 — EST. 2026</text>
+  <text x="1120" y="42" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="#121212" text-anchor="end">SAN DIEGO, CA</text>
+
+  <!-- red accent square -->
+  <rect x="80" y="110" width="140" height="140" fill="#EE352E"/>
+  <text x="150" y="220" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="96" fill="#F5EED9" text-anchor="middle">01</text>
+
+  <!-- headline -->
+  <text x="240" y="170" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="88" fill="#121212" letter-spacing="-3">ELISE</text>
+  <text x="240" y="245" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="88" fill="#121212" letter-spacing="-3">HASSELTINE</text>
+  <text x="755" y="245" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="88" fill="#EE352E" letter-spacing="-3">.</text>
+
+  <!-- subhead -->
+  <text x="80" y="335" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="22" letter-spacing="4" fill="#121212">COMMUNICATIONS PRACTICE — FILED UNDER EDITORIAL / TRANSLATION</text>
+
+  <!-- body lede -->
+  <text x="80" y="410" font-family="Helvetica, Arial, sans-serif" font-weight="500" font-size="28" fill="#2A2622">A communications practice for mission driven institutions</text>
+  <text x="80" y="448" font-family="Helvetica, Arial, sans-serif" font-weight="500" font-size="28" fill="#2A2622">whose research, policy, and legal work deserves to reach</text>
+  <text x="80" y="486" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="28" fill="#EE352E">further than the press release.</text>
+
+  <!-- footer band -->
+  <text x="80" y="610" font-family="Helvetica, Arial, sans-serif" font-weight="900" font-size="16" letter-spacing="4" fill="#121212">ELISEHASSELTINE.COM</text>
+  <text x="1120" y="610" font-family="Helvetica, Arial, sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="#121212" text-anchor="end">NOW BOOKING 2026</text>
+</svg>
