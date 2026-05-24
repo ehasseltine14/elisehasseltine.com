@@ -51,36 +51,18 @@ function scrollToId(id) {
   history.replaceState(null, "", location.pathname + location.search);
 }
 
-function TopNav({ active }) {
+function TopNav({ active, onNavClick }) {
   const links = [
     { id: "practice", label: "Practice", num: "01" },
     { id: "path",     label: "Path",     num: "02" },
     { id: "focus",    label: "Focus",    num: "03" },
     { id: "contact",  label: "Contact",  num: "04" },
   ];
-  const [open, setOpen] = useState(false);
-  const menuRef = useRef(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const onDocClick = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) setOpen(false);
-    };
-    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
-    document.addEventListener("mousedown", onDocClick);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", onDocClick);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
   const handleClick = (e, id) => {
     e.preventDefault();
-    setOpen(false);
+    if (onNavClick) onNavClick(id);
     scrollToId(id);
   };
-
   return (
     <React.Fragment>
       <div className="top-rule"></div>
@@ -92,31 +74,12 @@ function TopNav({ active }) {
           <div className="center">
             COMMUNICATIONS PRACTICE / EST. 2026
           </div>
-          <div className="right" ref={menuRef}>
-            <button
-              type="button"
-              className={"nav-index" + (open ? " open" : "")}
-              aria-expanded={open}
-              aria-haspopup="menu"
-              onClick={() => setOpen((o) => !o)}
-            >
-              Index <span className="caret" aria-hidden="true">▾</span>
-            </button>
-            {open && (
-              <div className="nav-menu" role="menu">
-                {links.map((l) => (
-                  <a
-                    key={l.id}
-                    href={"#" + l.id}
-                    role="menuitem"
-                    className={active === l.id ? "active" : ""}
-                    onClick={(e) => handleClick(e, l.id)}
-                  >
-                    <span className="num">{l.num}</span>{l.label}
-                  </a>
-                ))}
-              </div>
-            )}
+          <div className="right">
+            {links.map((l) => (
+              <a key={l.id} href={"#" + l.id} className={active === l.id ? "active" : ""} onClick={(e) => handleClick(e, l.id)}>
+                <span className="num">{l.num}</span>{l.label}
+              </a>
+            ))}
           </div>
         </div>
       </nav>
@@ -160,9 +123,11 @@ function Hero() {
 }
 
 /* ---------- Section banner ---------- */
-function SectionBanner({ id, num, numStyle, title, titleAccent, subKey, subVal }) {
-  return (
-    <div className="section-banner" id={id}>
+function SectionBanner({ id, num, numStyle, title, titleAccent, subKey, subVal, open, onToggle }) {
+  const collapsible = typeof onToggle === "function";
+  const cls = "section-banner" + (collapsible ? " collapsible" : "") + (open ? " open" : "");
+  const inner = (
+    <React.Fragment>
       <div className={"num " + (numStyle || "")}>{num}</div>
       <div className="ttl">{title}{titleAccent && (
         titleAccent.startsWith(" ")
@@ -173,12 +138,21 @@ function SectionBanner({ id, num, numStyle, title, titleAccent, subKey, subVal }
         <span className="label">{subKey}</span>
         <span className="val">{subVal}</span>
       </div>
-    </div>
+      {collapsible && <span className="banner-caret" aria-hidden="true">\u25be</span>}
+    </React.Fragment>
   );
+  if (collapsible) {
+    return (
+      <button type="button" className={cls} id={id} onClick={onToggle} aria-expanded={!!open}>
+        {inner}
+      </button>
+    );
+  }
+  return <div className={cls} id={id}>{inner}</div>;
 }
 
 /* ---------- Practice ---------- */
-function Practice() {
+function Practice({ open, onToggle }) {
   return (
     <section className="body">
       <SectionBanner
@@ -189,8 +163,10 @@ function Practice() {
         titleAccent="."
         subKey="Filed Under"
         subVal="Editorial / Translation"
+        open={open}
+        onToggle={onToggle}
       />
-      <div className="section-content">
+      {open && <div className="section-content">
         <div className="col">
           <span className="kicker reveal">A Statement</span>
           <div className="pull reveal d1">
@@ -208,13 +184,13 @@ function Practice() {
             I help organizations close that gap. In practice, that looks like <b>editorial strategy, narrative development, and platform native content</b> that takes rigorous research and policy work and renders it in the formats the public reads, watches, and shares, without losing the rigor.
           </p>
         </div>
-      </div>
+      </div>}
     </section>
   );
 }
 
 /* ---------- Path ---------- */
-function Path() {
+function Path({ open, onToggle }) {
   return (
     <section className="body">
       <SectionBanner
@@ -225,8 +201,10 @@ function Path() {
         titleAccent=" The Long Way"
         subKey="Class Of"
         subVal="Bucknell, 2024"
+        open={open}
+        onToggle={onToggle}
       />
-      <div className="section-content">
+      {open && <div className="section-content">
         <div className="col">
           <span className="kicker reveal">Origin</span>
           <div className="pull reveal d1">
@@ -265,7 +243,7 @@ function Path() {
             The bet I am making now is that the most useful thing someone with my training can do is bring rigorous research and accessible language onto the platforms where the public conversation is already happening, and treat that translation work seriously, over time, <b>as a practice.</b>
           </p>
         </div>
-      </div>
+      </div>}
     </section>
   );
 }
@@ -334,8 +312,8 @@ function FocusGeom({ kind }) {
   );
 }
 
-function Focus() {
-  const [open, setOpen] = useState(0);
+function Focus({ open, onToggle }) {
+  const [focusOpen, setFocusOpen] = useState(0);
   return (
     <section className="body">
       <SectionBanner
@@ -346,18 +324,20 @@ function Focus() {
         titleAccent=""
         subKey="Engaged With"
         subVal="A Small Number"
+        open={open}
+        onToggle={onToggle}
       />
-      <div className="focus-grid">
+      {open && <div className="focus-grid">
         {FOCUS_ITEMS.map((it, i) => {
-          const isOpen = open === i;
+          const isOpen = focusOpen === i;
           return (
             <div
               key={it.num}
               className={"focus-cell " + it.color + (isOpen ? " open" : "")}
-              onClick={() => setOpen(isOpen ? -1 : i)}
+              onClick={() => setFocusOpen(isOpen ? -1 : i)}
               role="button"
               tabIndex={0}
-              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen(isOpen ? -1 : i); } }}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setFocusOpen(isOpen ? -1 : i); } }}
             >
               <span className="ftag">{it.tag} {isOpen ? "/ OPEN" : "/ TAP"}</span>
               <FocusGeom kind={it.color} />
@@ -372,27 +352,28 @@ function Focus() {
             </div>
           );
         })}
-      </div>
+      </div>}
     </section>
   );
 }
 
 /* ---------- Contact ---------- */
-function Contact() {
+function Contact({ open, onToggle }) {
   const calendly  = "https://calendly.com/elise-hasseltine/elise-hasseltine-public-translation-media";
   const linkedin  = "linkedin.com/in/elisehasseltine";
   const instagram = "instagram.com/elisehasseltine";
   return (
-    <section className="body" id="contact">
-      <div className="section-banner">
+    <section className="body">
+      <button type="button" className={"section-banner collapsible" + (open ? " open" : "")} id="contact" onClick={onToggle} aria-expanded={!!open}>
         <div className="num blue">04</div>
         <div className="ttl">Correspond<em>.</em></div>
         <div className="sub">
           <span className="label">Status</span>
           <span className="val">Open to Inquiries</span>
         </div>
-      </div>
-      <div className="contact-wrap">
+        <span className="banner-caret" aria-hidden="true">▾</span>
+      </button>
+      {open && <div className="contact-wrap">
         <div className="contact-lhs">
           <h2 className="reveal">hello<span className="dot">.</span></h2>
           <div className="lede reveal d1">
@@ -438,7 +419,7 @@ function Contact() {
             </span>
           </div>
         </div>
-      </div>
+      </div>}
     </section>
   );
 }
@@ -484,6 +465,9 @@ function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   useReveal();
   const active = useActiveSection(["practice", "path", "focus", "contact"]);
+  const [openSections, setOpenSections] = useState({});
+  const toggle = (id) => setOpenSections((s) => ({ ...s, [id]: !s[id] }));
+  const openSection = (id) => setOpenSections((s) => (s[id] ? s : { ...s, [id]: true }));
 
   useEffect(() => {
     document.documentElement.setAttribute("data-palette", tweaks.palette);
@@ -492,18 +476,19 @@ function App() {
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.slice(1);
+      if (["practice", "path", "focus", "contact"].includes(id)) openSection(id);
       requestAnimationFrame(() => scrollToId(id));
     }
   }, []);
 
   return (
     <React.Fragment>
-      <TopNav active={active} />
+      <TopNav active={active} onNavClick={openSection} />
       <Hero />
-      <Practice />
-      <Path />
-      <Focus />
-      <Contact />
+      <Practice open={!!openSections.practice} onToggle={() => toggle("practice")} />
+      <Path open={!!openSections.path} onToggle={() => toggle("path")} />
+      <Focus open={!!openSections.focus} onToggle={() => toggle("focus")} />
+      <Contact open={!!openSections.contact} onToggle={() => toggle("contact")} />
       <Footer />
       <Tweaks tweaks={tweaks} setTweak={setTweak} />
     </React.Fragment>
