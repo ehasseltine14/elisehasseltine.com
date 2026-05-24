@@ -135,6 +135,17 @@
   nav.top a:hover::after, nav.top a.active::after { transform: scaleX(1); }
   nav.top a.active .num { color: var(--ink); background: var(--yellow); padding: 2px 5px; }
 
+  nav.top a.nav-cta {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 8px 14px;
+    margin-left: 10px;
+    border: 2px solid var(--ink);
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+  nav.top a.nav-cta::after { display: none; }
+  nav.top a.nav-cta:hover { background: var(--red); border-color: var(--red); color: var(--paper); }
+
   nav.top .right { position: relative; }
   .nav-index {
     appearance: none;
@@ -209,8 +220,8 @@
 
   .hero-stage {
     position: relative;
-    padding: 80px 32px 64px;
-    min-height: 76vh;
+    padding: 48px 32px 40px;
+    min-height: 0;
     display: grid;
     grid-template-columns: 1.2fr 1fr;
     gap: 64px;

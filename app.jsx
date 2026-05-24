@@ -45,6 +45,8 @@ const TODAY = new Date(2026, 4, 24); // May 24, 2026
 const fmtIso = (d) =>
   `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 
+const CALENDLY = "https://calendly.com/elise-hasseltine/elise-hasseltine-public-translation-media";
+
 /* ---------- Top Nav ---------- */
 function scrollToId(id) {
   const el = document.getElementById(id);
@@ -80,6 +82,7 @@ function TopNav({ active, onNavClick }) {
                 <span className="num">{l.num}</span>{l.label}
               </a>
             ))}
+            <a className="nav-cta" href={CALENDLY} target="_blank" rel="noreferrer noopener">Book a Call</a>
           </div>
         </div>
       </nav>
@@ -105,11 +108,6 @@ function Hero() {
             <span className="label">Proprietor</span>
             <div className="name">Elise Hasseltine</div>
             <div className="where">Editorial strategy, narrative development,<br/>and platform native content.</div>
-          </div>
-          <div className="hero-mark">
-            <span className="tag-tl">E.H. / MARK</span>
-            <div className="circle"></div>
-            <span className="tag-br">EST. 2026</span>
           </div>
         </div>
       </div>
