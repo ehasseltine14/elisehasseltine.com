@@ -6,9 +6,10 @@ const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
 }/*EDITMODE-END*/;
 
 /* ---------- Reveal hook ---------- */
-function useReveal() {
+function useReveal(deps) {
   useEffect(() => {
-    const els = document.querySelectorAll(".reveal");
+    const els = document.querySelectorAll(".reveal:not(.in)");
+    if (!els.length) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((e) => {
         if (e.isIntersecting) {
@@ -19,7 +20,7 @@ function useReveal() {
     }, { threshold: 0.10, rootMargin: "0px 0px -6% 0px" });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, deps);
 }
 
 /* ---------- Active section ---------- */
@@ -138,7 +139,7 @@ function SectionBanner({ id, num, numStyle, title, titleAccent, subKey, subVal, 
         <span className="label">{subKey}</span>
         <span className="val">{subVal}</span>
       </div>
-      {collapsible && <span className="banner-caret" aria-hidden="true">\u25be</span>}
+      {collapsible && <span className="banner-caret" aria-hidden="true">{"\u25be"}</span>}
     </React.Fragment>
   );
   if (collapsible) {
@@ -463,9 +464,9 @@ function Tweaks({ tweaks, setTweak }) {
 /* ---------- App ---------- */
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  useReveal();
   const active = useActiveSection(["practice", "path", "focus", "contact"]);
   const [openSections, setOpenSections] = useState({});
+  useReveal([openSections]);
   const toggle = (id) => setOpenSections((s) => ({ ...s, [id]: !s[id] }));
   const openSection = (id) => setOpenSections((s) => (s[id] ? s : { ...s, [id]: true }));
 
