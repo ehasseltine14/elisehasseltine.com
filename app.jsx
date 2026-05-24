@@ -55,9 +55,8 @@ function scrollToId(id) {
 function TopNav({ active, onNavClick }) {
   const links = [
     { id: "practice", label: "Practice", num: "01" },
-    { id: "path",     label: "Path",     num: "02" },
-    { id: "focus",    label: "Focus",    num: "03" },
-    { id: "contact",  label: "Contact",  num: "04" },
+    { id: "focus",    label: "Focus",    num: "02" },
+    { id: "contact",  label: "Contact",  num: "03" },
   ];
   const handleClick = (e, id) => {
     e.preventDefault();
@@ -116,7 +115,7 @@ function Hero() {
       </div>
 
       <div className="hero-foot">
-        <span className="l">A four part program <span className="arrow"></span> Practice / Path / Focus / Contact</span>
+        <span className="l">A three part program <span className="arrow"></span> Practice / Focus / Contact</span>
         <span className="r">Scroll to begin</span>
       </div>
     </section>
@@ -183,65 +182,6 @@ function Practice({ open, onToggle }) {
           </p>
           <p className="reveal d2">
             I help organizations close that gap. In practice, that looks like <b>editorial strategy, narrative development, and platform native content</b> that takes rigorous research and policy work and renders it in the formats the public reads, watches, and shares, without losing the rigor.
-          </p>
-        </div>
-      </div>}
-    </section>
-  );
-}
-
-/* ---------- Path ---------- */
-function Path({ open, onToggle }) {
-  return (
-    <section className="body">
-      <SectionBanner
-        id="path"
-        num="02"
-        numStyle=""
-        title="The Path,"
-        titleAccent=" The Long Way"
-        subKey="Class Of"
-        subVal="Bucknell, 2024"
-        open={open}
-        onToggle={onToggle}
-      />
-      {open && <div className="section-content">
-        <div className="col">
-          <span className="kicker reveal">Origin</span>
-          <div className="pull reveal d1">
-            The communications problem and the justice problem turned out to be <span className="red">the same problem.</span>
-          </div>
-          <div className="ticket reveal d2" aria-label="Curriculum vitae, ticket stub">
-            <div className="stub">
-              <div className="head">No. 2024</div>
-              <div className="big">B.A.</div>
-              <div className="small">American History</div>
-            </div>
-            <div className="perf"></div>
-            <div className="main">
-              <div className="label">Itinerary</div>
-              <div className="vals">
-                <div className="row"><span className="k">From</span>Bucknell, PA</div>
-                <div className="row"><span className="k">To</span>Civil Rights, Nat'l</div>
-                <div className="row"><span className="k">Started</span>Intake Phone Line</div>
-                <div className="row"><span className="k">Led</span>Digital, Site / Social / SEO</div>
-              </div>
-              <div className="label" style={{ marginTop: 2 }}>Admit One</div>
-            </div>
-          </div>
-        </div>
-        <div className="col">
-          <p className="reveal">
-            I studied American history at Bucknell and wrote a senior thesis on four hundred years of the country's argument with itself over alcohol, which turned out to be a history of how punitive systems and public narratives get built together.
-          </p>
-          <p className="reveal d1">
-            Late in college I learned that <b>54 percent of American adults read below a sixth grade level</b>, and realized the country I had been studying still writes its forms, ballots, leases, and websites above the reading level of half the people living in it.
-          </p>
-          <p className="reveal d2">
-            After graduating in 2024 I joined a national civil rights firm, started on the intake phone line, and a year later was leading the firm's digital work across website, social, and search. That is where I spent a year watching how algorithms decide what reaches a public and what does not, and watching the translation layer between expertise and the public break in real time.
-          </p>
-          <p className="reveal d3">
-            The bet I am making now is that the most useful thing someone with my training can do is bring rigorous research and accessible language onto the platforms where the public conversation is already happening, and treat that translation work seriously, over time, <b>as a practice.</b>
           </p>
         </div>
       </div>}
@@ -319,7 +259,7 @@ function Focus({ open, onToggle }) {
     <section className="body">
       <SectionBanner
         id="focus"
-        num="03"
+        num="02"
         numStyle="yellow"
         title="Current Focus"
         titleAccent=""
@@ -366,7 +306,7 @@ function Contact({ open, onToggle }) {
   return (
     <section className="body">
       <button type="button" className={"section-banner collapsible" + (open ? " open" : "")} id="contact" onClick={onToggle} aria-expanded={!!open}>
-        <div className="num blue">04</div>
+        <div className="num blue">03</div>
         <div className="ttl">Correspond<em>.</em></div>
         <div className="sub">
           <span className="label">Status</span>
@@ -464,7 +404,7 @@ function Tweaks({ tweaks, setTweak }) {
 /* ---------- App ---------- */
 function App() {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const active = useActiveSection(["practice", "path", "focus", "contact"]);
+  const active = useActiveSection(["practice", "focus", "contact"]);
   const [openSections, setOpenSections] = useState({});
   useReveal([openSections]);
   const toggle = (id) => setOpenSections((s) => ({ ...s, [id]: !s[id] }));
@@ -477,7 +417,7 @@ function App() {
   useEffect(() => {
     if (location.hash) {
       const id = location.hash.slice(1);
-      if (["practice", "path", "focus", "contact"].includes(id)) openSection(id);
+      if (["practice", "focus", "contact"].includes(id)) openSection(id);
       requestAnimationFrame(() => scrollToId(id));
     }
   }, []);
@@ -487,7 +427,6 @@ function App() {
       <TopNav active={active} onNavClick={openSection} />
       <Hero />
       <Practice open={!!openSections.practice} onToggle={() => toggle("practice")} />
-      <Path open={!!openSections.path} onToggle={() => toggle("path")} />
       <Focus open={!!openSections.focus} onToggle={() => toggle("focus")} />
       <Contact open={!!openSections.contact} onToggle={() => toggle("contact")} />
       <Footer />
