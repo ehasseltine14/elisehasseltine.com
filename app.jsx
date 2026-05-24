@@ -339,17 +339,9 @@ function Focus() {
 
 /* ---------- Contact ---------- */
 function Contact() {
-  const [copied, setCopied] = useState(false);
-  const email     = "elise.hasseltine@gmail.com";
+  const calendly  = "https://calendly.com/elise-hasseltine/elise-hasseltine-public-translation-media";
   const linkedin  = "linkedin.com/in/elisehasseltine";
   const instagram = "instagram.com/elisehasseltine";
-  const onCopy = () => {
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(email).catch(() => {});
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
   return (
     <section className="body" id="contact">
       <div className="section-banner">
@@ -366,12 +358,9 @@ function Contact() {
           <div className="lede reveal d1">
             If your organization is doing rigorous, public interest work and the translation layer is where things are <b>breaking down</b>, I would like to hear from you. Initial conversations are unstructured and free.
           </div>
-          <button
-            className={"copy-btn" + (copied ? " copied" : "")}
-            onClick={onCopy}
-          >
-            {copied ? "Copied to Clipboard" : "Copy Email Address"}
-          </button>
+          <a className="copy-btn" href={calendly} target="_blank" rel="noreferrer noopener">
+            Schedule a Call
+          </a>
         </div>
 
         <div className="ctk reveal d2">
@@ -386,10 +375,10 @@ function Contact() {
             <div><span className="k">Class</span>All Inquiries</div>
           </div>
           <div className="ctk-rows">
-            <a href={"mailto:" + email}>
-              <span className="k">Email</span>
-              <span className="v">{email}</span>
-              <span className="arr">Send →</span>
+            <a href={calendly} target="_blank" rel="noreferrer noopener">
+              <span className="k">Schedule</span>
+              <span className="v">calendly.com/elise-hasseltine</span>
+              <span className="arr">Book →</span>
             </a>
             <a href={"https://www." + linkedin} target="_blank" rel="noreferrer noopener">
               <span className="k">LinkedIn</span>

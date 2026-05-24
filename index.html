@@ -654,6 +654,10 @@
 
   .copy-btn {
     appearance: none;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
     background: var(--ink);
     color: var(--paper-lt);
     border: 2px solid var(--ink);
@@ -667,8 +671,7 @@
     transition: background 220ms ease, color 220ms ease;
     position: relative;
   }
-  .copy-btn:hover { background: var(--red); border-color: var(--red); }
-  .copy-btn.copied { background: var(--yellow); color: var(--ink); border-color: var(--ink); }
+  .copy-btn:hover { background: var(--red); border-color: var(--red); color: var(--paper-lt); }
 
   /* ===== FOOTER ===== */
   footer {
