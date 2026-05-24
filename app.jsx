@@ -58,10 +58,29 @@ function TopNav({ active }) {
     { id: "focus",    label: "Focus",    num: "03" },
     { id: "contact",  label: "Contact",  num: "04" },
   ];
+  const [open, setOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) setOpen(false);
+    };
+    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    document.addEventListener("mousedown", onDocClick);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
   const handleClick = (e, id) => {
     e.preventDefault();
+    setOpen(false);
     scrollToId(id);
   };
+
   return (
     <React.Fragment>
       <div className="top-rule"></div>
@@ -73,12 +92,31 @@ function TopNav({ active }) {
           <div className="center">
             COMMUNICATIONS PRACTICE / EST. 2026
           </div>
-          <div className="right">
-            {links.map((l) => (
-              <a key={l.id} href={"#" + l.id} className={active === l.id ? "active" : ""} onClick={(e) => handleClick(e, l.id)}>
-                <span className="num">{l.num}</span>{l.label}
-              </a>
-            ))}
+          <div className="right" ref={menuRef}>
+            <button
+              type="button"
+              className={"nav-index" + (open ? " open" : "")}
+              aria-expanded={open}
+              aria-haspopup="menu"
+              onClick={() => setOpen((o) => !o)}
+            >
+              Index <span className="caret" aria-hidden="true">▾</span>
+            </button>
+            {open && (
+              <div className="nav-menu" role="menu">
+                {links.map((l) => (
+                  <a
+                    key={l.id}
+                    href={"#" + l.id}
+                    role="menuitem"
+                    className={active === l.id ? "active" : ""}
+                    onClick={(e) => handleClick(e, l.id)}
+                  >
+                    <span className="num">{l.num}</span>{l.label}
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </nav>
@@ -90,14 +128,6 @@ function TopNav({ active }) {
 function Hero() {
   return (
     <section className="hero" id="top">
-      <div className="hero-meta">
-        <div><span className="k">Vol.</span><span className="v">I</span></div>
-        <div><span className="k">No.</span><span className="v">001 / 064</span></div>
-        <div><span className="k">Issued</span><span className="v">{fmtIso(TODAY)}</span></div>
-        <div><span className="k">Field</span><span className="v">Editorial / Strategy</span></div>
-        <div><span className="k">Location</span><span className="v">San Diego, CA</span></div>
-      </div>
-
       <div className="hero-stage">
         <div>
           <h1 className="hello reveal">hello<span className="dot">.</span></h1>
