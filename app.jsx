@@ -45,6 +45,12 @@ const fmtIso = (d) =>
   `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
 
 /* ---------- Top Nav ---------- */
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  history.replaceState(null, "", location.pathname + location.search);
+}
+
 function TopNav({ active }) {
   const links = [
     { id: "practice", label: "Practice", num: "01" },
@@ -52,20 +58,24 @@ function TopNav({ active }) {
     { id: "focus",    label: "Focus",    num: "03" },
     { id: "contact",  label: "Contact",  num: "04" },
   ];
+  const handleClick = (e, id) => {
+    e.preventDefault();
+    scrollToId(id);
+  };
   return (
     <React.Fragment>
       <div className="top-rule"></div>
       <nav className="top">
         <div className="row">
           <div className="left">
-            <a href="#top" style={{ letterSpacing: "0.22em" }}>Elise Hasseltine</a>
+            <a href="#top" style={{ letterSpacing: "0.22em" }} onClick={(e) => handleClick(e, "top")}>Elise Hasseltine</a>
           </div>
           <div className="center">
             COMMUNICATIONS PRACTICE / EST. 2026
           </div>
           <div className="right">
             {links.map((l) => (
-              <a key={l.id} href={"#" + l.id} className={active === l.id ? "active" : ""}>
+              <a key={l.id} href={"#" + l.id} className={active === l.id ? "active" : ""} onClick={(e) => handleClick(e, l.id)}>
                 <span className="num">{l.num}</span>{l.label}
               </a>
             ))}
@@ -390,11 +400,6 @@ function Contact() {
               <span className="v">@elisehasseltine</span>
               <span className="arr">Open →</span>
             </a>
-            <div className="row">
-              <span className="k">Reply</span>
-              <span className="v" style={{ fontWeight: 500, fontStyle: "italic" }}>within two business days</span>
-              <span className="arr"></span>
-            </div>
           </div>
           <div className="ctk-foot">
             <span>E.H. / 2026 / SD</span>
@@ -453,6 +458,13 @@ function App() {
   useEffect(() => {
     document.documentElement.setAttribute("data-palette", tweaks.palette);
   }, [tweaks.palette]);
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.slice(1);
+      requestAnimationFrame(() => scrollToId(id));
+    }
+  }, []);
 
   return (
     <React.Fragment>
